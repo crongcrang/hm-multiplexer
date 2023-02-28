@@ -1,3 +1,5 @@
+ARG BUILD_BOARD
+
 FROM --platform=$BUILDPLATFORM rust:1.65 AS vendor
 ENV USER=root
 WORKDIR /usr/src/gwmp-mux
@@ -15,7 +17,7 @@ COPY --from=vendor /usr/src/gwmp-mux/.cargo ./.cargo
 COPY --from=vendor /usr/src/gwmp-mux/vendor ./vendor
 RUN cargo build --release --offline
 
-FROM debian:buster-slim
+FROM balenalib/"$BUILD_BOARD"-debian:buster
 COPY --from=builder /usr/src/gwmp-mux/target/release/gwmp-mux /usr/local/bin/gwmp-mux
 RUN apt-get update -y
 RUN apt-get install python3 -y 
