@@ -17,4 +17,8 @@ RUN cargo build --release --offline
 
 FROM debian:buster-slim
 COPY --from=builder /usr/src/gwmp-mux/target/release/gwmp-mux /usr/local/bin/gwmp-mux
-ENTRYPOINT ["gwmp-mux"]
+RUN apt-get update -y
+RUN apt-get install python3 -y 
+COPY start_multiplexer.py /root/start_multiplexer.py
+RUN chmod 755 /root/start_multiplexer.py
+ENTRYPOINT ["/root/start_multiplexer.py"]
