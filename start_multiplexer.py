@@ -29,6 +29,10 @@ def main():
         ttn_cluster = ttn_config.get('ttn_cluster')
         cmd += ' --client %s:1700' % ttn_cluster
 
+    fleet_name = os.environ.get('BALENA_APP_NAME')
+    if fleet_name.endswith('-c'):
+        cmd += ' --client thix-forwarder:1680'
+
     os.system(cmd)
 
 
