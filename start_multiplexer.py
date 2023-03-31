@@ -30,7 +30,7 @@ def main():
         cmd += ' --client %s:1700' % ttn_cluster
 
     fleet_name = os.environ.get('BALENA_APP_NAME')
-    if fleet_name.endswith('-c'):
+    if fleet_name.endswith('-c') and os.path.isfile('/var/thix/config.yaml'):
         cmd += ' --client thix-forwarder:1680'
 
     os.system(cmd)
