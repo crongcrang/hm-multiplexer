@@ -1,4 +1,4 @@
-ARG BUILD_BOARD
+ARG BUILD_BOARD=raspberrypi4
 
 FROM --platform=$BUILDPLATFORM rust:1.65 AS vendor
 ENV USER=root
@@ -17,7 +17,8 @@ COPY --from=vendor /usr/src/gwmp-mux/.cargo ./.cargo
 COPY --from=vendor /usr/src/gwmp-mux/vendor ./vendor
 RUN cargo build --release --offline
 
-FROM balenalib/"$BUILD_BOARD"-debian:buster
+FROM balenalib/raspberrypi4-64-debian:buster
+
 COPY --from=builder /usr/src/gwmp-mux/target/release/gwmp-mux /usr/local/bin/gwmp-mux
 RUN apt-get update -y
 RUN apt-get install python3 -y 
